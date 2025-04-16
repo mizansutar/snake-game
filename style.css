@@ -1,46 +1,75 @@
-*{
-    padding: 0;
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-.cont{
-    background-color: grey;
-    min-height: 100vmin;
-    background-size: 100vw  100vh;
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #1a1a2e;
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
 }
-#board{
-background: linear-gradient(rgb(48, 3, 228),pink);
-height: 90vmin;
-width: 92vmin;
-border: 2px solid white;
-display: grid;
-grid-template-rows: repeat(20,1fr);
-grid-template-columns: repeat(20,1fr);
-}
-.head{
-background-color: red;
-border: 2px solid black;
-    border-radius:9px ;
-    transform: scale(1.02);
-    
 
+.cont {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    padding: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
 }
-.food{
-    background-color:yellow;
-    border: .25vmin solid blue;
-    border-radius:30px ;
+
+#board {
+    background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+    height: 90vmin;
+    width: 90vmin;
+    border: 2px solid white;
+    display: grid;
+    grid-template-rows: repeat(20, 1fr);
+    grid-template-columns: repeat(20, 1fr);
 }
-.snake{
+
+.sidebar {
+    min-width: 200px;
+    max-width: 240px;
+    background-color: #222;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#scoreBox, #highScoreBox {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+input[type='range'] {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.head {
+    background-color: red;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.snake {
     background-color: green;
-    border: .25vmin solid black;
-    border-radius:30px ;
-
+    border-radius: 5px;
 }
-#score{
-    position: absolute;
-    top: 9px;
-    right: 200px;
-    font-size: 35px;
+
+.food {
+    background-color: yellow;
+    border-radius: 50%;
+    border: 2px solid blue;
 }

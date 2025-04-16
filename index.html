@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>snake game</title>
+    <title>Snake Game</title>
     <link rel="stylesheet" href="style.css">
-    <script src="main.js"></script>
 </head>
 <body>
     <div class="cont">
-        <div id="score">
-            
+        <div class="sidebar">
+            <h2>🐍 Snake Game</h2>
+            <div id="scoreBox">Score: 0</div>
+            <div id="highScoreBox">High Score: 0</div>
+            <label for="speedRange">Speed: <span id="speedValue">5</span></label>
+            <input type="range" id="speedRange" min="2" max="15" value="5">
         </div>
         <div id="board"></div>
-        
-
     </div>
+    <script src="main.js"></script>
 </body>
 </html>

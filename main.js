@@ -1,118 +1,97 @@
 let inputdir = { x: 0, y: 0 };
-
 let speed = 5;
 let lastPaintTime = 0;
 let score = 0;
-let snakearr = [
-    { x: 10, y: 10 }
-];
-food = { x: 13, y: 15 };
+let highScore = localStorage.getItem("highScore") || 0;
+let snakearr = [{ x: 10, y: 10 }];
+let food = { x: 13, y: 15 };
 
+document.getElementById("highScoreBox").innerText = `High Score: ${highScore}`;
 
-
-
-// main logic making in this class 
 function main(ctime) {
     window.requestAnimationFrame(main);
-    //fps counting and speed controll of this game
-    if ((ctime - lastPaintTime) / 1000 < 1 / speed) {
-        return;
-    }
+    if ((ctime - lastPaintTime) / 1000 < 1 / speed) return;
     lastPaintTime = ctime;
-    // console.log(ctime);
     gameEngine();
 }
 
 function isCollide(snake) {
-    //return false;
     for (let i = 1; i < snake.length; i++) {
-        if (snake[i].x === snake[0].x && snake[i].y === snake[0].y)
-            return true;
-}
-    if (snake[0].x>=20 ||snake[0].x<=0 ||snake[0].y>=20 || snake[0].y<=0) 
-    {
-        return true;
+        if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true;
     }
-
+    return (
+        snake[0].x >= 20 || snake[0].x <= 0 ||
+        snake[0].y >= 20 || snake[0].y <= 0
+    );
 }
+
 function gameEngine() {
-    //part  1 updating the sname array of this game 
     if (isCollide(snakearr)) {
+        alert("Game Over! Press OK to restart.");
         inputdir = { x: 0, y: 0 };
-        alert("GAME OVER PRESS ENTER TO RE START....");
-        snakearr = [
-            { x: 10, y: 10 }
-        ];
-        score=0;
+        snakearr = [{ x: 10, y: 10 }];
+        if (score > highScore) {
+            highScore = score;
+            localStorage.setItem("highScore", highScore);
+        }
+        score = 0;
+        document.getElementById("highScoreBox").innerText = `High Score: ${highScore}`;
     }
-    // if the snake eats the  food 
 
-    if (snakearr[0].y === food.y && snakearr[0].x === food.x) {
+    if (snakearr[0].x === food.x && snakearr[0].y === food.y) {
         snakearr.unshift({ x: snakearr[0].x + inputdir.x, y: snakearr[0].y + inputdir.y });
-        let a = 8, b = 15;
-        food = { x: Math.round(a + (b - a) * Math.random()), y: Math.round(a + (b - a) * Math.random()) }
+        let a = 2, b = 18;
+        food = {
+            x: Math.floor(a + (b - a) * Math.random()),
+            y: Math.floor(a + (b - a) * Math.random())
+        };
         score++;
-        console.log(score);
+        document.getElementById("scoreBox").innerText = "Score: " + score;
     }
 
-    //moving the snake
     for (let i = snakearr.length - 2; i >= 0; i--) {
-        //const element = array[i];
         snakearr[i + 1] = { ...snakearr[i] };
     }
+
     snakearr[0].x += inputdir.x;
     snakearr[0].y += inputdir.y;
-    // part 2  dispaling the snake food
-    board.innerHTML = "score :"+score;
 
+    board.innerHTML = "";
     snakearr.forEach((e, index) => {
-        snakeElement = document.createElement('div');
+        const snakeElement = document.createElement("div");
         snakeElement.style.gridRowStart = e.y;
-
         snakeElement.style.gridColumnStart = e.x;
-
-        if (index === 0) {
-            snakeElement.classList.add('head');
-        } else {
-            snakeElement.classList.add('snake');
-        }
+        snakeElement.classList.add(index === 0 ? "head" : "snake");
         board.appendChild(snakeElement);
-    })
+    });
 
-    //   DISPALY food 
-    foodElement = document.createElement('div');
+    const foodElement = document.createElement("div");
     foodElement.style.gridRowStart = food.y;
     foodElement.style.gridColumnStart = food.x;
-    foodElement.classList.add('food');
+    foodElement.classList.add("food");
     board.appendChild(foodElement);
 }
 
-window.requestAnimationFrame(main);
-
-window.addEventListener('keydown', e => {
-    inputdir = { x: 0, y: 1 }//stating the game 
-
+window.addEventListener("keydown", e => {
     switch (e.key) {
         case "ArrowUp":
-           // console.log("arrowUP");
-            inputdir.x = 0;
-            inputdir.y = -1;
+            inputdir = { x: 0, y: -1 };
             break;
         case "ArrowDown":
-          //  console.log("arrowdown");
-            inputdir.x = 0;
-            inputdir.y = 1;
+            inputdir = { x: 0, y: 1 };
             break;
         case "ArrowLeft":
-          //  console.log("arrowleft");
-            inputdir.x = -1;
-            inputdir.y = 0;
+            inputdir = { x: -1, y: 0 };
             break;
         case "ArrowRight":
-           // console.log("arrowrFight");
-            inputdir.x = 1;
-            inputdir.y = 0;
+            inputdir = { x: 1, y: 0 };
             break;
     }
+});
 
-})
+document.getElementById("speedRange").addEventListener("input", e => {
+    speed = Number(e.target.value);
+    document.getElementById("speedValue").textContent = speed;
+});
+
+window.requestAnimationFrame(main);
